@@ -30,13 +30,8 @@ termination_eps = -1e-8;
 criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, number_of_iterations,  termination_eps)
 
 for index, row in df.iterrows():
-    if index==1:
+    if index!=2:
         continue
-    if index==3:
-        continue
-    if index==4:
-        continue
-
     
 
     h,m,s = re.split(':',row.start)
@@ -48,6 +43,7 @@ for index, row in df.iterrows():
     outputName = time.strftime("%Y%m%d", time.strptime(row.date,"%d-%b-%Y")) + '-' + str(index) + '.avi'
 
     df.loc[index,'clipname'] = outputName
+    
     
     print('Movie ' + row.folder + '/' + row.filename + ' from ' + str(timeStart) + ' to ' + str(timeStop) + ' out to ' + outputName)
 #   if index<6: continue
@@ -80,15 +76,19 @@ for index, row in df.iterrows():
         if frame.shape!=S:
             frame = cv2.resize(frame, S) #in case size has been altered by fecking windows
         if not(im1_gray.size):
-            im1_gray = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+            im1_gray = cv2.equalizeHist(cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY))
+#im1_gray *= 1.5#cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+
             first = frame.copy()
         
-        im2_gray = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+        im2_gray =  cv2.equalizeHist(cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY))
+        
+
         try:
             (cc, warp_matrix) = cv2.findTransformECC (im1_gray,im2_gray,warp_matrix, warp_mode, criteria)
 # (cc, warp_matrix) = cv2.findTransformECC(im2_gray,im1_gray,warp_matrix, warp_mode, criteria)    
         except cv2.error as e:
-            im1_gray = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+            im1_gray = cv2.equalizeHist(cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY))
             first = frame.copy()
             print("missed frame")
 #im1_gray =im2_gray.copy()
@@ -97,13 +97,13 @@ for index, row in df.iterrows():
 #full_warp = np.dot(full_warp,np.vstack((warp_matrix,[0,0,1])))
          #full_warp = np.dot(full_warp, np.vstack((warp_matrix,[0,0,1])))
          # full_warp = np.dot(full_warp, warp_matrix)
-        full_warp = np.dot(warp_matrix,full_warp)
+#    full_warp = np.dot(warp_matrix,full_warp)
         im2_aligned = np.empty_like(frame)
         np.copyto(im2_aligned, first)
         # transform the frame - the 5s are to cut out the border that the shitty windows conversion created for no reason
         im2_aligned = cv2.warpPerspective(frame[5:-5,5:-5,:], warp_matrix, (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST + cv2.WARP_INVERSE_MAP  , borderMode=cv2.BORDER_TRANSPARENT)
          # im2_aligned = cv2.warpPerspective(frame[5:-5,5:-5,:], full_warp, (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST  , borderMode=cv2.BORDER_TRANSPARENT)
-#im2_aligned = cv2.warpAffine(frame[5:-5,5:-5,:], warp_matrix, (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST  , borderMode=cv2.BORDER_TRANSPARENT)
+#im2_aligned = cv2.warpAffine(frame[5:-5,5:-5,:], warp_matrix, (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST + cv2.WARP_INVERSE_MAP , borderMode=cv2.BORDER_TRANSPARENT)
 #        im2_aligned = cv2.warpAffine(frame[5:-5,5:-5,:], full_warp[0:2,:], (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST  , borderMode=cv2.BORDER_TRANSPARENT)
         out.write(im2_aligned)
         
@@ -111,6 +111,6 @@ for index, row in df.iterrows():
     cap.release()
     out.release()
     
-df.to_csv(CLIPLIST,index=False)
+#df.to_csv(CLIPLIST,index=False)
 
 

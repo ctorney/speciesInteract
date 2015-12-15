@@ -1,0 +1,24 @@
+date,time,folder,filename,X,Y,bearing,height,clips,start,stop,description,length,clipname,bl_w,bl_z
+22-Apr-2015,17:50:00,Drone_footage_1,Drone_Footage_04.22.2015.wmv,-2.562409,35.139302,276,nr,2,00:02:44,00:04:18,wildebeest moving right to left ,00:01:36,20150422-0.avi,24,30.72
+22-Apr-2015,17:50:00,Drone_footage_1,Drone_Footage_04.22.2015.wmv,-2.562409,35.139302,276,nr,2,00:04:34,00:06:02,only wildbeest – grass ignoring trails,00:01:32,20150422-1.avi,24,30.72
+23-Apr-2015,16:13:00,Drone_footage_1,Drone_Footage_4.23.2015.mp4,-2.613537,35.155563,163,nr,3,00:05:31,00:07:23,few wildies and static zebra,00:04:21,20150423-2.avi,23,29.44
+23-Apr-2015,16:13:00,Drone_footage_1,Drone_Footage_4.23.2015.mp4,-2.613537,35.155563,163,nr,3,00:08:08,00:09:50,big herd of wildies (scared),00:01:42,20150423-3.avi,24,30.72
+23-Apr-2015,16:13:00,Drone_footage_1,Drone_Footage_4.23.2015.mp4,-2.613537,35.155563,163,nr,3,00:10:39,00:16:06,big herd wildies only moving left and right (confused/scared),00:05:51,20150423-4.avi,23,29.44
+15-May-2015,08:18:00,Drone_footage_1,Drone_Footage_05.15.2015(2).wmv,-2.341416,34.8128,150,200,1,00:12:00,00:12:38,wildebeest and some zebra – lots of shadow,00:00:45,20150515-5.avi,18,23.04
+24-May-2015,nr,Drone_footage_1,05.24.2015_HR.MP4,-2.112735,35.058284,30,200,2,00:04:50,00:06:45,wildebeest and zebra in shot for 2 mins,00:02:02,20150524-6.avi,17,21.76
+24-May-2015,nr,Drone_footage_1,05.24.2015_HR.MP4,-2.112735,35.058284,30,200,2,00:07:12,00:08:54,just wildebeest left in shot,00:01:42,20150524-7.avi,19,24.32
+27-May-2015,12:08:00,Drone_footage_1,05.27.2015_HR.MP4,-2.819268,34.861101,209,175,2,00:05:24,00:05:40,w+z,00:00:20,20150527-8.avi,19,24.32
+27-May-2015,12:08:00,Drone_footage_1,05.27.2015_HR.MP4,-2.819268,34.861101,209,175,2,00:06:39,00:11:24,lots of wildies by a river - 8 zebs in the mix roughly,00:04:40,20150527-9.avi,20,25.6
+28-May-2015,12:27:00,Drone_footage_1,05.28.2015_HR.MP4,-2.812741,34.868906,295,175,1,00:06:42,00:09:42,loads of w+zs – something crazy happens at the end and the all rush down but drone is on the way back,00:02:58,20150528-10.avi,17,21.76
+4-Jun-2015,08:30:00,4_June_2015,06042015_N110_Nuvi(2a).MP4,-2.49235,35.003567,10,nr,5,00:03:08,00:04:50,lots of movement - wildies and z,00:02:47,20150604-11.avi,17,21.76
+4-Jun-2015,08:30:00,4_June_2015,06042015_N110_Nuvi(2a).MP4,-2.49235,35.003567,10,nr,5,00:05:40,00:07:18,,00:01:38,20150604-12.avi,18,23.04
+4-Jun-2015,08:30:00,4_June_2015,06042015_N110_Nuvi(2a).MP4,-2.49235,35.003567,10,nr,5,00:07:43,00:08:24,,00:00:41,20150604-13.avi,19,24.32
+4-Jun-2015,08:30:00,4_June_2015,06042015_N110_Nuvi(2a).MP4,-2.49235,35.003567,10,nr,5,00:08:33,00:09:23,,00:00:47,20150604-14.avi,21,26.88
+4-Jun-2015,08:30:00,4_June_2015,06042015_N110_Nuvi(2a).MP4,-2.49235,35.003567,10,nr,5,00:11:02,00:12:16,,00:01:16,20150604-15.avi,19,24.32
+4-Jun-2015,10:30:00,4_June_2015,06042015_N111_Nuvi.MP4,-2.498833,35.019,45,nr,2,00:03:31,00:04:20,great clip – loads of w+z,00:00:49,20150604-16.avi,19,24.32
+4-Jun-2015,10:30:00,4_June_2015,06042015_N111_Nuvi.MP4,-2.498833,35.019,45,nr,2,00:07:32,00:09:20,W+Z hyena goes through and the zebra largely ignore it,00:01:50,20150604-17.avi,18,23.04
+4-Jun-2015,08:00:00,4_June_2015,06042015_N110_Nuvi(1a).MP4,-2.49235,35.003567,220,nr,2,00:06:59,00:08:03,5 zebs - one gets chased by a wildebeest,00:01:06,20150604-18.avi,19,24.32
+4-Jun-2015,08:00:00,4_June_2015,06042015_N110_Nuvi(1a).MP4,-2.49235,35.003567,220,nr,2,00:08:18,00:11:36,catches up with the zebra for a few minutes the rest is wildebeest largely following the trails,00:03:18,20150604-19.avi,19,24.32
+5-Jun-2015,15:35:00,5_June_2015,06052015_N113_a.MP4,-2.506283,35.000767,140,nr,1,00:07:01,00:10:00,small zebra herd crosses,00:02:59,20150605-20.avi,20,25.6
+14-Jun-2015,15:30:00,14_June_2015,06142015_6a.MP4,-2.468083,34.9112,270,Up for 80 s - did not drop.,1,00:07:36,00:10:15,small herd of z moves north – wildebeest in shot but not moving,00:02:39,20150614-21.avi,17,21.76
+14-Jun-2015,08:25:00,14_June_2015,06142015_1a.MP4,-2.462533,34.91445,135,Up for 70s - down for 10 s,1,00:06:50,00:09:58,long clip with wildebeest and zebra moving toward a river crossing,00:04:08,20150614-22.avi,16,20.48
