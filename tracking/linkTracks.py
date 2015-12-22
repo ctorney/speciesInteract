@@ -12,10 +12,10 @@ from scipy import interpolate
 import trackpy.predict
 
 HD = os.getenv('HOME')
+DD = '/media/ctorney/SAMSUNG/'
 
-
-DATADIR = HD + '/data/wildebeest/lacey-field-2015/'
-CLIPDIR = HD + '/data/wildebeest/lacey-field-2015/wildzeb/'
+DATADIR = DD + '/data/wildebeest/lacey-field-2015/'
+CLIPDIR = DD + '/data/wildebeest/lacey-field-2015/wildzeb/'
 CLIPLIST = HD + '/workspace/speciesInteract/clipList.csv'
 
 
@@ -23,7 +23,7 @@ CLIPLIST = HD + '/workspace/speciesInteract/clipList.csv'
 df = pd.read_csv(CLIPLIST)
 
 for index, row in df.iterrows():
-    if index<4:
+    if index<21:
         continue
     
     # pandas file for export of positions
@@ -43,7 +43,7 @@ for index, row in df.iterrows():
 
 
     f_iter = (frame for fnum, frame in toLink.groupby('frame'))
-    t = pd.concat(pred.link_df_iter(f_iter, 15.00, memory=10))
+    t = pd.concat(pred.link_df_iter(f_iter, 5.00, memory=20))
     outTracks = pd.DataFrame(columns= ['frame','x','y','id'])
 
     minFrames = 10

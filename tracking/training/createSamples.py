@@ -7,16 +7,17 @@ import math as m
 import pandas as pd
 
 HD = os.getenv('HOME')
+DD = '/media/ctorney/SAMSUNG/'
 
-DATADIR = HD + '/data/wildebeest/lacey-field-2015/'
-CLIPDIR = HD + '/data/wildebeest/lacey-field-2015/wildzeb/'
+DATADIR = DD + '/data/wildebeest/lacey-field-2015/'
+CLIPDIR = DD + '/data/wildebeest/lacey-field-2015/wildzeb/'
 CLIPLIST = HD + '/workspace/speciesInteract/clipList.csv'
 
 df = pd.read_csv(CLIPLIST)
 for index, row in df.iterrows():
-
-    if index!=2:
+    if index<10:
         continue
+    
     
     inputName = row.clipname
     zebra_sz = row.bl_z
@@ -73,7 +74,7 @@ for index, row in df.iterrows():
             tmpImg = frame[max(0,iy-box_dim/2):min(ny,iy+box_dim/2), max(0,ix-box_dim/2):min(nx,ix+box_dim/2)]
             
             cv2.imshow(frName,tmpImg)
-            k = cv2.waitKey(1000) -  0x100000
+            k = cv2.waitKey(500) # -  0x100000
             
             
             if k==ord('z'):
@@ -119,7 +120,7 @@ for index, row in df.iterrows():
                     break
             
     
-    break
+    
     cap.release()
 
 

@@ -10,9 +10,10 @@ import time
 
 HD = os.getenv('HOME')
 
+DD = '/media/ctorney/SAMSUNG/'
 
-DATADIR = HD + '/data/wildebeest/lacey-field-2015/'
-CLIPDIR = HD + '/data/wildebeest/lacey-field-2015/wildzeb/'
+DATADIR = DD + '/data/wildebeest/lacey-field-2015/'
+CLIPDIR = DD + '/data/wildebeest/lacey-field-2015/wildzeb/'
 CLIPLIST = HD + '/workspace/speciesInteract/clipList.csv'
 
 params = cv2.SimpleBlobDetector_Params()
@@ -24,7 +25,7 @@ params.filterByConvexity= 0
 params.minArea = 5
 blobdetector = cv2.SimpleBlobDetector_create(params)
 
-outputMovie=1
+outputMovie=0
 
 df = pd.read_csv(CLIPLIST)
 
@@ -60,6 +61,7 @@ for index, row in df.iterrows():
     cv2.imwrite(CLIPDIR + noext + '.png',frame)
   
     cap.set(cv2.CAP_PROP_POS_FRAMES,0)
+    maxB = 200
     for tt in range(fCount):
         # Capture frame-by-frame
         _, frame = cap.read()
@@ -80,6 +82,8 @@ for index, row in df.iterrows():
             thisFrame.set_value(ind, 'y', b.pt[1])
             thisFrame.set_value(ind, 'frame', tt)
             ind +=1
+            if ind>maxB:
+                break
         dfPos = pd.concat([dfPos,thisFrame])
         if outputMovie:
             out.write(frame)

@@ -4,7 +4,7 @@ import cv2
 import pickle
 
 
-from sklearn import svm
+
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
 
