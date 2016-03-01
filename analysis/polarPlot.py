@@ -1,19 +1,9 @@
 import os
-import csv
 import numpy as np
-from datetime import datetime
-from pymc import *
-from numpy import array, empty
-from numpy.random import randint, rand
-import numpy as np
-from pymc.Matplot import plot as mcplot
-import matplotlib
-import numpy as np
+
 import matplotlib.pyplot as plt
-from scipy.interpolate import griddata
-from scipy.stats import binned_statistic_2d
 import pandas as pd
-import math
+from math import *
 from matplotlib import transforms
 from viridis import viridis
 
@@ -40,11 +30,11 @@ for index, row in df.iterrows():
     posDF = pd.read_csv(posfilename) 
     posDF['clip']=index
     posDF = posDF[posDF['animal']==worz]
-    posDF = posDF[posDF['frame']%10==0]
+    posDF = posDF[posDF['frame']%50==0]
 
     allDF = allDF.append(posDF,ignore_index=True)
-    if index>5:
-        break
+    #if index>5:
+    #    break
     
 
         
@@ -88,7 +78,7 @@ for thisRow in range(rowCount):
 
 ## POLAR PLOT OF RELATIVE POSITIONS
 #BL = is approx 32 pixels
-binn2=19 # distance bins
+binn2=29 # distance bins
 binn1=72
 
 dr = 0.5 # width of distance bins
@@ -148,7 +138,7 @@ trans_axlabel = trans_spine + offset_axlabel
 axes.plot(theta_ticks, r_ticks, '-_k', transform=trans_spine, clip_on=False)
 
 # plot the 'tick labels'
-for ii in xrange(len(r_ticks)):
+for ii in range(len(r_ticks)):
     axes.text(theta_ticks[ii], r_ticks[ii], "%.0f" % r_tick_labels[ii], ha="right", va="center", clip_on=False, transform=trans_ticklabels)
 
 # plot the 'axis label'
@@ -211,7 +201,7 @@ trans_axlabel = trans_spine + offset_axlabel
 axes.plot(theta_ticks, r_ticks, '-_k', transform=trans_spine, clip_on=False)
 
 # plot the 'tick labels'
-for ii in xrange(len(r_ticks)):
+for ii in range(len(r_ticks)):
     axes.text(theta_ticks[ii], r_ticks[ii], "%.0f" % r_tick_labels[ii], ha="right", va="center", clip_on=False, transform=trans_ticklabels)
 
 # plot the 'axis label'
@@ -270,7 +260,7 @@ trans_axlabel = trans_spine + offset_axlabel
 axes.plot(theta_ticks, r_ticks, '-_k', transform=trans_spine, clip_on=False)
 
 # plot the 'tick labels'
-for ii in xrange(len(r_ticks)):
+for ii in range(len(r_ticks)):
     axes.text(theta_ticks[ii], r_ticks[ii], "%.0f" % r_tick_labels[ii], ha="right", va="center", clip_on=False, transform=trans_ticklabels)
 
 # plot the 'axis label'
