@@ -88,8 +88,8 @@ for thisRow in range(rowCount):
 
 ## POLAR PLOT OF RELATIVE POSITIONS
 #BL = is approx 32 pixels
-binn2=9 # distance bins
-binn1=36
+binn2=19 # distance bins
+binn1=72
 
 dr = 0.5 # width of distance bins
 sr = 0.25 # start point of distance
@@ -112,7 +112,8 @@ size = 8
 
 fig1=plt.figure(figsize=(8,8))
 ax2=plt.subplot(projection="polar",frameon=False)
-im=ax2.pcolormesh(theta2,r2,hista2,lw=0.0,vmin=np.min(hista2),vmax=np.max(hista2),cmap='viridis')
+#im=ax2.pcolormesh(theta2,r2,hista2,lw=0.0,vmin=np.min(hista2),vmax=np.max(hista2),cmap='viridis')
+im=ax2.pcolormesh(theta2,r2,hista2,lw=0.0,vmin=0.0005,vmax=0.002,cmap='viridis')
 ax2.yaxis.set_visible(False)
 
 # angle lines
