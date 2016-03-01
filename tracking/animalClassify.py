@@ -40,9 +40,7 @@ outputMovie=0
 df = pd.read_csv(CLIPLIST)
 
 for index, row in df.iterrows():
-    if index==20:
-        continue
-    if index<9:
+    if index!=22:
         continue
     inputName = row.clipname
     zebra_sz = row.bl_z

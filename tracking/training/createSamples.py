@@ -15,7 +15,7 @@ CLIPLIST = HD + '/workspace/speciesInteract/clipList.csv'
 
 df = pd.read_csv(CLIPLIST)
 for index, row in df.iterrows():
-    if index<10:
+    if index!=21:
         continue
     
     
@@ -52,6 +52,8 @@ for index, row in df.iterrows():
     cv2.namedWindow(frName, flags =  cv2.WINDOW_NORMAL)
     escaped = False
     for i in range(numPars):
+        
+        print(str(i) + ' of ' + str(numPars))
         thisPar = linkedDF[linkedDF['id']==i]
         if escaped == True:
             break
@@ -112,9 +114,11 @@ for index, row in df.iterrows():
             
             if tmpImg.size == 4*grabSize*grabSize:# and tmpImg[tmpImg==0].size<10 :
                 if animal[1]==2:
-                    cv2.imwrite('./zebra/' + noext + '_' + str(animal[0]) + '_' + str(fNum) + '.png',cv2.resize(tmpImg,(32,32)))
+                    
+                    cv2.imwrite('./'+ str(index) + '/zebra/' + noext + '_' + str(animal[0]) + '_' + str(fNum) + '.png',cv2.resize(tmpImg,(32,32)))
                 if animal[1]==1:
-                    cv2.imwrite('./wildebeest/' + noext + '_' + str(animal[0]) + '_' + str(fNum) + '.png',cv2.resize(tmpImg,(32,32)))
+
+                    cv2.imwrite('./'+ str(index) + '/wildebeest/' + noext + '_' + str(animal[0]) + '_' + str(fNum) + '.png',cv2.resize(tmpImg,(32,32)))
                 if animal[1]==0:
                     cv2.imwrite('./no/' + noext + '_' + str(animal[0]) + '_' + str(fNum) + '.png',cv2.resize(tmpImg,(32,32)))
                     break

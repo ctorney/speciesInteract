@@ -8,23 +8,24 @@ import math
 import time
 
 HD = os.getenv('HOME')
+DD = '/media/ctorney/SAMSUNG/'
 
-
-DATADIR = HD + '/data/wildebeest/lacey-field-2015/'
-CLIPDIR = HD + '/data/wildebeest/lacey-field-2015/wildzeb/'
+DATADIR = DD + '/data/wildebeest/lacey-field-2015/'
+CLIPDIR = DD + '/data/wildebeest/lacey-field-2015/wildzeb/'
 CLIPLIST = HD + '/workspace/speciesInteract/clipList.csv'
+
 
 
 df = pd.read_csv(CLIPLIST)
 df['clipname']=''
 
 warp_mode = cv2.MOTION_EUCLIDEAN
-warp_mode = cv2.MOTION_HOMOGRAPHY
+#warp_mode = cv2.MOTION_HOMOGRAPHY
 number_of_iterations = 20
 
 # Specify the threshold of the increment
 # in the correlation coefficient between two iterations
-termination_eps = -1e-8;
+termination_eps = 1e-16;
 
 # Define termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, number_of_iterations,  termination_eps)
@@ -66,7 +67,7 @@ for index, row in df.iterrows():
     im1_gray = np.array([])
     first = np.array([])
     #cap.set(cv2.CAP_PROP_POS_FRAMES,480)
-    warp_matrix = np.eye(3, 3, dtype=np.float32) 
+    warp_matrix = np.eye(2, 3, dtype=np.float32) 
     full_warp = np.eye(3, 3, dtype=np.float32)
     for tt in range(fStart,fStop):
         # Capture frame-by-frame
@@ -85,26 +86,26 @@ for index, row in df.iterrows():
         
 
         try:
-            (cc, warp_matrix) = cv2.findTransformECC (im1_gray,im2_gray,warp_matrix, warp_mode, criteria)
-# (cc, warp_matrix) = cv2.findTransformECC(im2_gray,im1_gray,warp_matrix, warp_mode, criteria)    
+     #       (cc, warp_matrix) = cv2.findTransformECC (im1_gray,im2_gray,warp_matrix, warp_mode, criteria)
+            (cc, warp_matrix) = cv2.findTransformECC(im2_gray,im1_gray,warp_matrix, warp_mode, criteria)    
         except cv2.error as e:
             im1_gray = cv2.equalizeHist(cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY))
             first = frame.copy()
             print("missed frame")
-#im1_gray =im2_gray.copy()
+        im1_gray =im2_gray.copy()
         # keep track of all the transformations to this point
         
 #full_warp = np.dot(full_warp,np.vstack((warp_matrix,[0,0,1])))
-         #full_warp = np.dot(full_warp, np.vstack((warp_matrix,[0,0,1])))
+        full_warp = np.dot(full_warp, np.vstack((warp_matrix,[0,0,1])))
          # full_warp = np.dot(full_warp, warp_matrix)
 #    full_warp = np.dot(warp_matrix,full_warp)
         im2_aligned = np.empty_like(frame)
         np.copyto(im2_aligned, first)
         # transform the frame - the 5s are to cut out the border that the shitty windows conversion created for no reason
-        im2_aligned = cv2.warpPerspective(frame[5:-5,5:-5,:], warp_matrix, (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST + cv2.WARP_INVERSE_MAP  , borderMode=cv2.BORDER_TRANSPARENT)
+        #im2_aligned = cv2.warpPerspective(frame[5:-5,5:-5,:], warp_matrix, (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST + cv2.WARP_INVERSE_MAP  , borderMode=cv2.BORDER_TRANSPARENT)
          # im2_aligned = cv2.warpPerspective(frame[5:-5,5:-5,:], full_warp, (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST  , borderMode=cv2.BORDER_TRANSPARENT)
 #im2_aligned = cv2.warpAffine(frame[5:-5,5:-5,:], warp_matrix, (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST + cv2.WARP_INVERSE_MAP , borderMode=cv2.BORDER_TRANSPARENT)
-#        im2_aligned = cv2.warpAffine(frame[5:-5,5:-5,:], full_warp[0:2,:], (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST  , borderMode=cv2.BORDER_TRANSPARENT)
+        im2_aligned = cv2.warpAffine(frame[5:-5,5:-5,:], full_warp[0:2,:], (S[0],S[1]), dst=im2_aligned, flags=cv2.INTER_NEAREST  , borderMode=cv2.BORDER_TRANSPARENT)
         out.write(im2_aligned)
         
 

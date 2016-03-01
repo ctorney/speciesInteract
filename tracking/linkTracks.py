@@ -16,14 +16,14 @@ DD = '/media/ctorney/SAMSUNG/'
 
 DATADIR = DD + '/data/wildebeest/lacey-field-2015/'
 CLIPDIR = DD + '/data/wildebeest/lacey-field-2015/wildzeb/'
-CLIPLIST = HD + '/workspace/speciesInteract/clipList.csv'
+CLIPLIST = HD + '/workspace/speciesInteract/clipList2.csv'
 
 
 
 df = pd.read_csv(CLIPLIST)
 
 for index, row in df.iterrows():
-    if index<21:
+    if index!=19:
         continue
     
     # pandas file for export of positions
@@ -38,21 +38,24 @@ for index, row in df.iterrows():
     
     toLink = pd.read_csv(posfilename,index_col=0)
     pred = trackpy.predict.NearestVelocityPredict()
+    #pred = trackpy.predict.NullPredict()
 
 
 
 
     f_iter = (frame for fnum, frame in toLink.groupby('frame'))
-    t = pd.concat(pred.link_df_iter(f_iter, 5.00, memory=20))
+    t = pd.concat(pred.link_df_iter(f_iter, 10.00, memory=15))
     outTracks = pd.DataFrame(columns= ['frame','x','y','id'])
 
     minFrames = 10
     p_id = 0
     for cnum, cpos in t.groupby('particle'):
+        print(p_id)
         # delete tracks that are too short
         frameLen = max(cpos['frame'])-min(cpos['frame'])
         if frameLen<minFrames:
             continue
+        
         
         # interpolate to smooth and fill in any missing frames        
         frameTimes = np.arange(min(cpos['frame'])+1,max(cpos['frame']),1)  
