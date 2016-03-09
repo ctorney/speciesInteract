@@ -17,6 +17,8 @@ OUTDIR = HD + '/Dropbox/Wildebeest_collaboration/Data/w_z/'
 
 df = pd.read_csv(CLIPLIST)
 for index, row in df.iterrows():
+    if index!=4:
+        continue
     inputName = row.clipname
     wildeBL = row.bl_w
     noext, ext = os.path.splitext(inputName)
@@ -71,13 +73,15 @@ for index, row in df.iterrows():
         headings = np.arctan2(dy,dx)
         #headings[-1]=headings[-2] 
 #        plot arrows for error checking
-#        x=xSmooth[0:-1]
-#        y=ySmooth[0:-1]
-#        u = np.cos(headings)
-#        v = np.sin(headings)
-#        plt.quiver(x, y, u ,v) 
-#        plt.axes().set_aspect('equal')
-#        plt.show()
+#        if cnum==100:
+#            x=xSmooth[0:-1]
+#            y=ySmooth[0:-1]
+#            u = np.cos(headings)
+#            v = np.sin(headings)
+#            plt.quiver(x, y, u ,v) 
+#            plt.axes().set_aspect('equal')
+#            plt.show()
+#            break
 
         newcpos = pd.DataFrame(np.column_stack((ft,xSmooth,ySmooth,dx,dy,headings,xv,yv,xa,ya)), columns= ['frame','x','y','dx','dy','heading','vx','vy','ax','ay'])
         newcpos['id']=cnum

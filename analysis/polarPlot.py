@@ -1,9 +1,11 @@
 import os
 import numpy as np
-
+import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
+import math
 from math import *
+from scipy.stats import binned_statistic_2d
 from matplotlib import transforms
 from viridis import viridis
 
@@ -23,18 +25,20 @@ OUTDIR = HD + '/Dropbox/Wildebeest_collaboration/Data/w_z/'
 df = pd.read_csv(CLIPLIST)
 allDF = pd.DataFrame()
 
-worz = 'w'
+worz = 'z'
 for index, row in df.iterrows():
+    #if index!=4:
+    #    continue
     noext, ext = os.path.splitext(row.clipname)   
     posfilename = OUTDIR +  '/TRACKS_' + noext + '.csv'
     posDF = pd.read_csv(posfilename) 
     posDF['clip']=index
     posDF = posDF[posDF['animal']==worz]
-    posDF = posDF[posDF['frame']%50==0]
+    posDF = posDF[posDF['frame']%10==0]
 
     allDF = allDF.append(posDF,ignore_index=True)
-    #if index>5:
-    #    break
+    
+        
     
 
         
@@ -52,6 +56,7 @@ for thisRow in range(rowCount):
     thisX = allData[thisRow,1]
     thisY = allData[thisRow,2]
     thisAngle = (allData[thisRow,5])
+    #thisAngle = atan2(allData[thisRow,7],allData[thisRow,6])
     thisTrack = (allData[thisRow,10])
     thisClip = allData[thisRow,12]
     # find all animals at this time point in the clip that aren't the focal individual
@@ -69,7 +74,7 @@ for thisRow in range(rowCount):
         angle = math.atan2(dy,dx)
         angle = angle - thisAngle
         jAngle = jAngle - thisAngle
-        angle = math.atan2(dy,dx)
+        #angle = math.atan2(dy,dx)
         theta = math.atan2(math.sin(angle), math.cos(angle))
         jHeading  = math.atan2(math.sin(jAngle), math.cos(jAngle))
         rowLoc = np.vstack((rowLoc,[r, theta, jHeading]))
@@ -78,11 +83,11 @@ for thisRow in range(rowCount):
 
 ## POLAR PLOT OF RELATIVE POSITIONS
 #BL = is approx 32 pixels
-binn2=29 # distance bins
+binn2=19 # distance bins
 binn1=72
 
-dr = 0.5 # width of distance bins
-sr = 0.25 # start point of distance
+dr = 0.25 # width of distance bins
+sr = 0.5 # start point of distance
 maxr=sr+(dr*binn2)
 theta2 = np.linspace(0.0,2.0 * np.pi, binn1+1)
 r2 = np.linspace(sr, maxr, binn2+1)
@@ -102,8 +107,8 @@ size = 8
 
 fig1=plt.figure(figsize=(8,8))
 ax2=plt.subplot(projection="polar",frameon=False)
-#im=ax2.pcolormesh(theta2,r2,hista2,lw=0.0,vmin=np.min(hista2),vmax=np.max(hista2),cmap='viridis')
-im=ax2.pcolormesh(theta2,r2,hista2,lw=0.0,vmin=0.0005,vmax=0.002,cmap='viridis')
+im=ax2.pcolormesh(theta2,r2,hista2,lw=0.0,vmin=np.min(hista2),vmax=np.max(hista2),cmap='viridis')
+#im=ax2.pcolormesh(theta2,r2,hista2,lw=0.0,vmin=0.0005,vmax=0.002,cmap='viridis')
 ax2.yaxis.set_visible(False)
 
 # angle lines
@@ -145,7 +150,7 @@ for ii in range(len(r_ticks)):
 axes.text(theta_axlabel, r_axlabel, 'metres',rotation='vertical', fontsize='xx-large', ha='right', va='center', clip_on=False, transform=trans_axlabel)#             family='Trebuchet MS')
 
 
-fig1.savefig("densityHM" + worz + "..png",bbox_inches='tight',dpi=100)
+fig1.savefig("densityHM" + worz + ".png",bbox_inches='tight',dpi=100)
 # plot the 'spine'
 
 
@@ -162,11 +167,15 @@ histsin=binned_statistic_2d(x=locations[:,0],y=locations[:,1],values=sinRelative
 # mean is atan and std dev is 1-R
 relativeAngles = np.arctan2(histsin,histcos)
 stdRelativeAngles = np.sqrt( 1 - np.sqrt(histcos**2+histsin**2))
+minSD = np.nanmin(stdRelativeAngles)
+maxSD = np.nanmax(stdRelativeAngles)
+
+stdRelativeAngles[np.isnan(stdRelativeAngles)]=0
 
 
 fig1=plt.figure(figsize=(8,8))
 ax2=plt.subplot(projection="polar",frameon=False)
-im=ax2.pcolormesh(theta2,r2,stdRelativeAngles,lw=0.0,vmin=np.min(stdRelativeAngles),vmax=np.max(stdRelativeAngles),cmap='viridis_r')
+im=ax2.pcolormesh(theta2,r2,stdRelativeAngles,lw=0.0,vmin=minSD,vmax=maxSD,cmap='viridis_r')
 ax2.yaxis.set_visible(False)
 
 # angle lines
@@ -208,7 +217,7 @@ for ii in range(len(r_ticks)):
 axes.text(theta_axlabel, r_axlabel, 'metres',rotation='vertical', fontsize='xx-large', ha='right', va='center', clip_on=False, transform=trans_axlabel)#             family='Trebuchet MS')
 
 
-fig1.savefig("order" + worz + "..png",bbox_inches='tight',dpi=100)
+fig1.savefig("order" + worz + ".png",bbox_inches='tight',dpi=100)
 
 
 ## POLAR PLOT OF ATTRACTION
@@ -225,7 +234,7 @@ angles=np.tile(angles,(binn2,1))
 toOrigin = -(histcos*np.cos(angles) + histsin*np.sin(angles))
 fig1=plt.figure(figsize=(8,8))
 ax2=plt.subplot(projection="polar",frameon=False)
-im=ax2.pcolormesh(theta2,r2,toOrigin,lw=0.0,vmin=np.min(toOrigin),vmax=np.max(toOrigin),cmap='viridis')
+im=ax2.pcolormesh(theta2,r2,toOrigin,lw=0.0,vmin=np.nanmin(toOrigin),vmax=np.nanmax(toOrigin),cmap='viridis')
 ax2.yaxis.set_visible(False)
 
 # angle lines
