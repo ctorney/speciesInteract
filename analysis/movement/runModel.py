@@ -68,14 +68,14 @@ plt.xlim(0.9,0.94)
 plt.show()
 plt.savefig('rho.png')
 
-
-mrho = 0.913
-xx = np.linspace(-3.142,3.142,1000)
-yy = (1.0/(2.0*math.pi))*(1.0-mrho**2)/(1.0+mrho**2-2*mrho*np.cos(xx))
-plt.xlim(-3.142,3.142)
-plt.ylim(0,4)
-plt.plot(xx,yy,color='blue',linewidth=2)
-plt.fill_between(xx, 0, yy, color='blue', alpha=.25)
+#
+#mrho = 0.913
+#xx = np.linspace(-3.142,3.142,1000)
+#yy = (1.0/(2.0*math.pi))*(1.0-mrho**2)/(1.0+mrho**2-2*mrho*np.cos(xx))
+#plt.xlim(-3.142,3.142)
+#plt.ylim(0,4)
+#plt.plot(xx,yy,color='blue',linewidth=2)
+#plt.fill_between(xx, 0, yy, color='blue', alpha=.25)
 
 np.save('rho.npy',M.trace('rho')[:])
 np.save('interaction_angle.npy',M.trace('interaction_angle')[:])
@@ -83,6 +83,7 @@ np.save('beta.npy',M.trace('beta')[:])
 np.save('interaction_length.npy',M.trace('interaction_length')[:])
 np.save('ignore_length.npy',M.trace('ignore_length')[:])
 np.save('alpha.npy',M.trace('alpha')[:])
+np.save('discount.npy',M.trace('discount')[:])
 
 
 

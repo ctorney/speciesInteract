@@ -15,22 +15,31 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-
 neighbours = np.load('neighbours.npy')
 mvector = np.load('mvector.npy')
 evector = np.load('evector.npy')
+animals = np.load('animals.npy')
     
 
 
+WILD=0
+ZEB=1
+#pick which species to focus on
+ANIMAL=WILD
+
+mvector = mvector[animals==ANIMAL]
+evector = evector[animals==ANIMAL]
+neighbours = neighbours[animals==ANIMAL]
 
 il=20
 ia = 0.8
 al = 0.0
 rl = 0.88
+discount = 0.5
 ig=1
 
 
-rholist = np.arange(0.01,1,0.01)
+rholist = np.arange(0.01,1,0.1)
 probs = np.zeros_like(rholist)
 
 for i in range(len(rholist)):
@@ -48,6 +57,7 @@ for i in range(len(rholist)):
     
     n_weights = np.exp(-neighbours[:,:,0]/il)*np.tanh(neighbours[:,:,0]/ig)
     n_weights[(neighbours[:,:,0]==0)|(neighbours[:,:,1]<-ia)|(neighbours[:,:,1]>ia)]=0.0
+    n_weights[neighbours[:,:,2]!=ANIMAL] = discount*n_weights[neighbours[:,:,2]!=ANIMAL]
     #n_weights = np.exp(-np.abs(neighbours[:,:,1])/ia)*np.exp(-neighbours[:,:,0]/il)*np.tanh(neighbours[:,:,0]/ig)
     #n_weights[(neighbours[:,:,0]==0)]=0.0
     

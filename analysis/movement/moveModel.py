@@ -14,7 +14,7 @@ import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
 
-__all__ = ['ignore_length','interaction_length','interaction_angle','rho','alpha','beta','mvector']
+__all__ = ['ignore_length','interaction_length','interaction_angle','rho','alpha','beta','discount','mvector']
 
 
 interaction_length = Uniform('interaction_length', lower=0.5, upper=20.0)
@@ -23,6 +23,8 @@ interaction_angle = Uniform('interaction_angle', lower=0, upper=pi)
 rho = Uniform('rho',lower=0, upper=1)
 alpha = Uniform('alpha',lower=0, upper=1)
 beta = Uniform('beta',lower=0, upper=1)
+#cross-species discount of social information
+discount = Uniform('discount',lower=0, upper=1)
 
 # rho is tanh(a dx) * exp(-b dx)
 # the inflexion point is located at (1/2a)ln(2a/b + sqrt((2a/b)^2+1)
@@ -30,11 +32,21 @@ beta = Uniform('beta',lower=0, upper=1)
 neighbours = np.load('neighbours.npy')
 mvector = np.load('mvector.npy')
 evector = np.load('evector.npy')
+animals = np.load('animals.npy')
     
 
 
+WILD=0
+ZEB=1
+#pick which species to focus on
+ANIMAL=1
+
+mvector = mvector[animals==ANIMAL]
+evector = evector[animals==ANIMAL]
+neighbours = neighbours[animals==ANIMAL]
+
 @stochastic(observed=True)
-def moves(il=interaction_length,ig=ignore_length, ia=interaction_angle, social=rho, al=alpha, be=beta,value=mvector):
+def moves(il=interaction_length,ig=ignore_length, ia=interaction_angle, social=rho, al=alpha, be=beta, ds=discount, value=mvector):
     # this is the main function that calculates the log probability of all the moves based on the parameters that are passed in
     # and the assumed interaction function
     
@@ -46,6 +58,8 @@ def moves(il=interaction_length,ig=ignore_length, ia=interaction_angle, social=r
    # first calculate all the rhos
     n_weights = np.exp(-neighbours[:,:,0]/il)*np.tanh(neighbours[:,:,0]/ig)
     n_weights[(neighbours[:,:,0]==0)|(neighbours[:,:,1]<-ia)|(neighbours[:,:,1]>ia)]=0.0
+    n_weights[neighbours[:,:,2]!=ANIMAL] = ds*n_weights[neighbours[:,:,2]!=ANIMAL]
+    
     #n_weights = np.exp(-np.abs(neighbours[:,:,1])/ia)*np.exp(-neighbours[:,:,0]/il)*np.tanh(neighbours[:,:,0]/ig)
     #n_weights[(neighbours[:,:,0]==0)]=0.0
     
