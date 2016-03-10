@@ -30,13 +30,13 @@ binn1=72
 dr = 0.5 # width of distance bins
 sr = 0.25 # start point of distance
 maxr=sr+(dr*binn2)
-vis_angle = 0.31
+vis_angle = 0.24
 theta2 = np.linspace(0,2.0 * np.pi, binn1+1)
 #theta2 = np.linspace(-vis_angle,vis_angle, binn1+1)
 r2 = np.linspace(sr, maxr, binn2+1)
 areas = pi*((r2+dr)**2-r2**2)
-ig=3.11
-ir=3.87
+ig=11.97
+ir=0.52
 areas = np.exp(-r2/ir)*np.tanh(r2/ig)
 areas=np.tile(areas,(binn1,1)).T
 
@@ -95,7 +95,7 @@ for ii in range(len(r_ticks)):
 axes.text(theta_axlabel, r_axlabel, 'metres',rotation='vertical', fontsize='xx-large', ha='right', va='center', clip_on=False, transform=trans_axlabel)#             family='Trebuchet MS')
 
 
-fig1.savefig("rules.png",bbox_inches='tight',dpi=100)
+fig1.savefig("rules_w.png",bbox_inches='tight',dpi=100)
 # plot the 'spine'
 
 
