@@ -47,6 +47,7 @@ mcplot(M)
 #plt.show()
 
 #show()
+plt.figure()
 aa = (M.trace('alpha')[:])
 bb = (M.trace('beta')[:])
 ev=(1-aa)*(1-bb)
@@ -77,13 +78,13 @@ plt.show()
 ##plt.plot(xx,yy,color='blue',linewidth=2)
 ##plt.fill_between(xx, 0, yy, color='blue', alpha=.25)
 #
-np.save('wild/rho.npy',M.trace('rho')[:])
-np.save('wild/interaction_angle.npy',M.trace('interaction_angle')[:])
-np.save('wild/beta.npy',M.trace('beta')[:])
-np.save('wild/interaction_length.npy',M.trace('interaction_length')[:])
-np.save('wild/ignore_length.npy',M.trace('ignore_length')[:])
-np.save('wild/alpha.npy',M.trace('alpha')[:])
-np.save('wild/discount.npy',M.trace('discount')[:])
+np.save('wild2zeb/rho.npy',M.trace('rho')[:])
+np.save('wild2zeb/interaction_angle.npy',M.trace('interaction_angle')[:])
+np.save('wild2zeb/beta.npy',M.trace('beta')[:])
+np.save('wild2zeb/interaction_length.npy',M.trace('interaction_length')[:])
+np.save('wild2zeb/ignore_length.npy',M.trace('ignore_length')[:])
+np.save('wild2zeb/alpha.npy',M.trace('alpha')[:])
+np.save('wild2zeb/discount.npy',M.trace('discount')[:])
 
 
 

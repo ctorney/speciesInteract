@@ -58,7 +58,7 @@ def moves(il=interaction_length,ig=ignore_length, ia=interaction_angle, social=r
    # first calculate all the rhos
     n_weights = np.exp(-neighbours[:,:,0]/il)*np.tanh(neighbours[:,:,0]/ig)
     n_weights[(neighbours[:,:,0]==0)|(neighbours[:,:,1]<-ia)|(neighbours[:,:,1]>ia)]=0.0
-    n_weights[neighbours[:,:,2]!=ANIMAL] = 0.0#ds*n_weights[neighbours[:,:,2]!=ANIMAL]
+    n_weights[neighbours[:,:,2]==ANIMAL] = 0.0#ds*n_weights[neighbours[:,:,2]!=ANIMAL]
     
     #n_weights = np.exp(-np.abs(neighbours[:,:,1])/ia)*np.exp(-neighbours[:,:,0]/il)*np.tanh(neighbours[:,:,0]/ig)
     #n_weights[(neighbours[:,:,0]==0)]=0.0
