@@ -9,9 +9,9 @@ import pymc
 from pymc import MCMC
 from pymc.Matplot import plot as mcplot
 M = MCMC(moveModel)
-
+plt.close('all')
 #M.use_step_method(pymc.AdaptiveMetropolis, [M.left_angle, M.right_angle, M.lag, M.dist],  delay=1000)
-M.sample(iter=20000, burn=1000, thin=10,verbose=0)
+M.sample(iter=20000, burn=10, thin=10,verbose=0)
 mcplot(M)
 #from pylab import hist, show
 
@@ -58,7 +58,7 @@ plt.hist(sv,normed=True, label='social')
 plt.hist(ev,normed=True, label='environment')
 
 plt.legend(loc='upper center')
-plt.xlim(0.1,0.75)
+plt.xlim(0,1.0)
 plt.show()
 #plt.savefig('heading_weights.png')
 #
@@ -78,13 +78,13 @@ plt.show()
 ##plt.plot(xx,yy,color='blue',linewidth=2)
 ##plt.fill_between(xx, 0, yy, color='blue', alpha=.25)
 #
-np.save('wild2zeb/rho.npy',M.trace('rho')[:])
-np.save('wild2zeb/interaction_angle.npy',M.trace('interaction_angle')[:])
-np.save('wild2zeb/beta.npy',M.trace('beta')[:])
-np.save('wild2zeb/interaction_length.npy',M.trace('interaction_length')[:])
-np.save('wild2zeb/ignore_length.npy',M.trace('ignore_length')[:])
-np.save('wild2zeb/alpha.npy',M.trace('alpha')[:])
-np.save('wild2zeb/discount.npy',M.trace('discount')[:])
+np.save('zeb/rho.npy',M.trace('rho')[:])
+np.save('zeb/interaction_angle.npy',M.trace('interaction_angle')[:])
+np.save('zeb/beta.npy',M.trace('beta')[:])
+np.save('zeb/interaction_length.npy',M.trace('interaction_length')[:])
+np.save('zeb/decay_exponent.npy',M.trace('decay_exponent')[:])
+np.save('zeb/alpha.npy',M.trace('alpha')[:])
+
 
 
 

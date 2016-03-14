@@ -55,13 +55,13 @@ for index, row in df.iterrows():
             posDF.ix[index,'dtheta'] = nextTime.iloc[0]['heading'] -  thisTheta
             thisX = nextTime.iloc[0]['x']
             thisY = nextTime.iloc[0]['y']
-            # calculate the average heading all the other caribou were taking at this point
-            excThis = posDF[posDF['id']!=0]
+            # calculate the average heading all the other animals were taking at this point in space
+            excThis = posDF[posDF['id']!=thisID]
             xp = excThis['x'].values
             yp = excThis['y'].values
             xdirs = excThis['dx'].values
             ydirs = excThis['dy'].values
-            kappa = 1.0*1.0 ##check this 
+            kappa = 4.0#1.0*1.0 ##check this 
             dists = (((xp - thisX)**2 + (yp - thisY)**2))
             weights = np.exp(-dists/kappa)
             xav = np.sum(weights*xdirs)/np.sum(weights)
@@ -71,6 +71,7 @@ for index, row in df.iterrows():
 
     
     allDF = allDF.append(posDF,ignore_index=True)
+    break
     
     
 allDF = allDF[np.isfinite(allDF['dtheta'])]
@@ -123,8 +124,8 @@ evector[evector>pi]=evector[evector>pi]-2*pi
 animals = np.zeros_like(mvector)
 animals[allDF['animal'].values=='z']=1.0
 
-np.save('neighbours.npy', neighbours)
-np.save('mvector.npy', mvector)
-np.save('evector.npy', evector)
-np.save('animals.npy',animals)
+np.save('neighbours1.npy', neighbours)
+np.save('mvector1.npy', mvector)
+np.save('evector1.npy', evector)
+np.save('animals1.npy',animals)
 

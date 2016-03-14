@@ -12,20 +12,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
 from scipy.stats import binned_statistic_2d
-import pandas as pd
+#import pandas as pd
 import math
 from math import *
 from matplotlib import transforms
 from viridis import viridis
 
-import ternary
+#import ternary
 
 plt.register_cmap(name='viridis', cmap=viridis)
 viridis_r = matplotlib.colors.LinearSegmentedColormap( 'viridis_r', matplotlib.cm.revcmap(viridis._segmentdata))
 plt.register_cmap(name='viridis_r', cmap=viridis_r)
 
 plt.close('all')
-dirs = ['wild','wild2zeb','zeb','zeb2wild']
+dirs = ['zeb']
 values = np.zeros((4,3))
 plt.figure()
 for idx,dd in enumerate(dirs): 
@@ -62,33 +62,33 @@ plt.legend(loc='upper left')
 plt.show()
 plt.savefig('bias.png')
 
-### Scatter Plot
-scale = 0.3
-fontsize=12
-figure, tax = ternary.figure(scale=scale)
-tax.set_title("Scatter Plot", fontsize=20)
-tax.boundary(linewidth=2.0)
-tax.gridlines(multiple=0.1, color="blue")
-# Plot a few different styles with a legend
-
-tax.scatter([tuple(values[0,])], marker='s', color='red', label="wildebeest-wildebeest")
-tax.scatter([tuple(values[1,])], marker='D', color='black', label="zebra-zebra")
-tax.scatter([tuple(values[2,])], marker='o', color='blue', label="wildebeest-zebra")
-tax.scatter([tuple(values[3,])], marker='s', color='green', label="zebra-wildebeest")
-
-#tax.scatter(values[0,], marker='D', color='green', label="Green Diamonds")
-tax.legend()
-#tax.ticks(axis='lbr', linewidth=1, multiple=0.1)
-tax.left_axis_label("Left label $\\alpha^2$")
-tax.right_axis_label("Right label $\\beta^2$")
-tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$")
-tax.show()
+#### Scatter Plot
+#scale = 0.3
+#fontsize=12
+#figure, tax = ternary.figure(scale=scale)
+#tax.set_title("Scatter Plot", fontsize=20)
+#tax.boundary(linewidth=2.0)
+#tax.gridlines(multiple=0.1, color="blue")
+## Plot a few different styles with a legend
+#
+#tax.scatter([tuple(values[0,])], marker='s', color='red', label="wildebeest-wildebeest")
+#tax.scatter([tuple(values[1,])], marker='D', color='black', label="zebra-zebra")
+#tax.scatter([tuple(values[2,])], marker='o', color='blue', label="wildebeest-zebra")
+#tax.scatter([tuple(values[3,])], marker='s', color='green', label="zebra-wildebeest")
+#
+##tax.scatter(values[0,], marker='D', color='green', label="Green Diamonds")
+#tax.legend()
+##tax.ticks(axis='lbr', linewidth=1, multiple=0.1)
+#tax.left_axis_label("Left label $\\alpha^2$")
+#tax.right_axis_label("Right label $\\beta^2$")
+#tax.bottom_axis_label("Bottom label $\\Gamma - \\Omega$")
+#tax.show()
 
 #
 ### POLAR PLOT OF RELATIVE POSITIONS
 ##BL = is approx 32 pixels
 binn2=19 # distance bins
-binn1=72*2
+binn1=72*8
 
 dr = 0.5 # width of distance bins
 sr = 0.25 # start point of distance
@@ -107,7 +107,7 @@ for idx,dd in enumerate(dirs):
     r2 = np.linspace(sr, maxr, binn2+1)
     areas = pi*((r2+dr)**2-r2**2)
 
-    areas = np.exp(-r2/ir)*np.tanh(r2/ig)
+    areas = (np.exp((1.0/ig)*(1-(r2/ir)**ig))*(r2/ir))#**ig
     areas=np.tile(areas,(binn1,1)).T
     
     for i in range(binn1):
