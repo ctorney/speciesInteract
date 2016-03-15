@@ -78,12 +78,12 @@ plt.show()
 ##plt.plot(xx,yy,color='blue',linewidth=2)
 ##plt.fill_between(xx, 0, yy, color='blue', alpha=.25)
 #
-np.save('zeb/rho.npy',M.trace('rho')[:])
-np.save('zeb/interaction_angle.npy',M.trace('interaction_angle')[:])
-np.save('zeb/beta.npy',M.trace('beta')[:])
-np.save('zeb/interaction_length.npy',M.trace('interaction_length')[:])
-np.save('zeb/decay_exponent.npy',M.trace('decay_exponent')[:])
-np.save('zeb/alpha.npy',M.trace('alpha')[:])
+np.save('zeb2wild/rho.npy',M.trace('rho')[:])
+np.save('zeb2wild/interaction_angle.npy',M.trace('interaction_angle')[:])
+np.save('zeb2wild/beta.npy',M.trace('beta')[:])
+np.save('zeb2wild/interaction_length.npy',M.trace('interaction_length')[:])
+np.save('zeb2wild/decay_exponent.npy',M.trace('decay_exponent')[:])
+np.save('zeb2wild/alpha.npy',M.trace('alpha')[:])
 
 
 

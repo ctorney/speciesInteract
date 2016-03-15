@@ -25,7 +25,7 @@ viridis_r = matplotlib.colors.LinearSegmentedColormap( 'viridis_r', matplotlib.c
 plt.register_cmap(name='viridis_r', cmap=viridis_r)
 
 plt.close('all')
-dirs = ['zeb']
+dirs = ['zeb2wild']
 values = np.zeros((4,3))
 plt.figure()
 for idx,dd in enumerate(dirs): 
