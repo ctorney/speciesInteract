@@ -38,7 +38,7 @@ WILD=0
 ZEB=1
 #pick which species to focus on
 ANIMAL=1
-NEIGH=1
+NEIGH=0
 mvector = mvector[animals==ANIMAL]
 evector = evector[animals==ANIMAL]
 sin_ev = np.sin(evector)
