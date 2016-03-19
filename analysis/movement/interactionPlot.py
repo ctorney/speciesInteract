@@ -24,7 +24,7 @@ plt.register_cmap(name='viridis_r', cmap=viridis_r)
  
 ## POLAR PLOT OF RELATIVE POSITIONS
 #BL = is approx 32 pixels
-binn2=19 # distance bins
+binn2=49 # distance bins
 binn1=72
 
 dr = 0.5 # width of distance bins
@@ -37,7 +37,16 @@ r2 = np.linspace(sr, maxr, binn2+1)
 areas = pi*((r2+dr)**2-r2**2)
 ig=11.97
 ir=0.52
-areas = np.exp(-r2/ir)*np.tanh(r2/ig)
+
+aa = np.load( 'zeb/decay_exponent.npy')
+bb = np.load( 'zeb/interaction_length.npy')
+cc = np.load( 'zeb/interaction_angle.npy')
+ig=np.mean(aa)
+ir=np.mean(bb)
+vis_angle = np.mean(cc)
+
+#areas = np.exp(-r2/ir)*np.tanh(r2/ig)
+areas = (np.exp((1.0/ig)*(1-(r2/ir)**ig))*(r2/ir))#**ig
 areas=np.tile(areas,(binn1,1)).T
 
 for i in range(binn1):

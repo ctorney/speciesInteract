@@ -50,16 +50,27 @@ mcplot(M)
 plt.figure()
 aa = (M.trace('alpha')[:])
 bb = (M.trace('beta')[:])
-ev=(1-aa)*(1-bb)
-sv=bb
-mv=(aa)*(1-bb)
+mv=(1-bb)*(1-aa)
+sv=aa
+ev=(bb)*(1-aa)
 plt.hist(mv,normed=True, label='memory')
 plt.hist(sv,normed=True, label='social')
 plt.hist(ev,normed=True, label='environment')
 
 plt.legend(loc='upper center')
-plt.xlim(0,1.0)
+plt.xlim(0,1)
 plt.show()
+plt.savefig('heading_weights.png')
+
+plt.figure()
+plt.hist((M.trace('rho_s')[:]),normed=True, label='s')
+plt.hist((M.trace('rho_m')[:]),normed=True, label='m')
+plt.hist((M.trace('rho_e')[:]),normed=True, label='environment')
+
+plt.xlim(0.7,1.0)
+plt.legend(loc='upper center')
+plt.show()
+
 #plt.savefig('heading_weights.png')
 #
 #
@@ -78,7 +89,11 @@ plt.show()
 ##plt.plot(xx,yy,color='blue',linewidth=2)
 ##plt.fill_between(xx, 0, yy, color='blue', alpha=.25)
 #
-np.save('zeb/rho.npy',M.trace('rho')[:])
+
+
+np.save('zeb/rho_e.npy',M.trace('rho_e')[:])
+np.save('zeb/rho_m.npy',M.trace('rho_m')[:])
+np.save('zeb/rho_s.npy',M.trace('rho_s')[:])
 np.save('zeb/interaction_angle.npy',M.trace('interaction_angle')[:])
 np.save('zeb/beta.npy',M.trace('beta')[:])
 np.save('zeb/interaction_length.npy',M.trace('interaction_length')[:])
