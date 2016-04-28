@@ -6,6 +6,7 @@ import time
 from scipy import interpolate
 from scipy import ndimage
 import matplotlib.pyplot as plt
+from pykalman import KalmanFilter
 HD = os.getenv('HOME')
 DD = '/media/ctorney/SAMSUNG/'
 
@@ -14,6 +15,27 @@ CLIPDIR = DD + '/data/wildebeest/lacey-field-2015/wildzeb/'
 CLIPLIST = HD + '/workspace/speciesInteract/clipListReduced.csv'
 
 OUTDIR = HD + '/Dropbox/Wildebeest_collaboration/Data/w_z/'
+
+
+# converted to 10 fps
+
+
+# transitions for 2d movement with positions, velocity and acceleration
+transition_matrix = [[1,0,1,0,0.5,0], [0,1,0,1,0,0.5], [0,0,1,0,1,0], [0,0,0,1,0,1], [0,0,0,0,1,0], [0,0,0,0,0,1]]
+
+# observe only positions
+observation_matrix = [[1,0,0,0,0,0], [0,1,0,0,0,0]]
+
+# low noise on transitions
+transition_covariance = np.eye(6)*1e-3
+observation_covariance_m = np.eye(2)*2
+
+kf = KalmanFilter(transition_matrices = transition_matrix, observation_matrices = observation_matrix, transition_covariance=transition_covariance,observation_covariance=observation_covariance_m)
+
+
+
+
+
 
 df = pd.read_csv(CLIPLIST)
 for index, row in df.iterrows():
@@ -30,38 +52,23 @@ for index, row in df.iterrows():
     posDF = pd.read_csv(trackname) 
     
     outTracks = pd.DataFrame(columns= ['frame','x','y','dx','dy','heading','vx','vy','ax','ay','id','animal'])
+    px_to_m = (2.0/wildeBL) # approximate metres by wildebeest body length of 2 metres
     
-    #smoothing
-    winLen = 10
-    vwinLen = 30
-    w = np.kaiser(winLen,1)
-    w = w/w.sum()
-    w2 = np.kaiser(vwinLen,1)
-    w2 = w2/w2.sum()
     for cnum, cpos in posDF.groupby('id'):
-        if len(cpos)<10:
-            continue
+        obs = np.vstack((cpos['x'].values*px_to_m, cpos['y'].values*px_to_m)).T
+        #obs = np.vstack((cpos['x'].values, cpos['y'].values)).T
+        kf.initial_state_mean=[cpos['x'].values[0]*px_to_m,cpos['y'].values[0]*px_to_m,0,0,0,0]
+        sse = kf.smooth(obs)[0]
+
         ft = cpos['frame'].values
         ani = cpos['animal'].values[0]
-        xd = cpos['x'].values*(2.0/wildeBL)
-        xd = np.r_[np.ones((winLen))*xd[0],xd,np.ones((winLen))*xd[-1]]
-        xSmooth = np.convolve(w/w.sum(),xd,mode='same')[(winLen):-(winLen)]
-        xv = np.diff(xSmooth)
-        xv = np.r_[np.ones((vwinLen))*xv[0],xv,np.ones((vwinLen))*xv[-1]]
-        xv = np.convolve(w2/w2.sum(),xv,mode='same')[(vwinLen):-(vwinLen-1)]
-        xa = np.diff(xv)
-        xa = np.r_[np.ones((vwinLen))*xa[0],xa,np.ones((vwinLen))*xa[-1]]
-        xa = np.convolve(w2/w2.sum(),xa,mode='same')[(vwinLen):-(vwinLen-1)]
-        yd = cpos['y'].values*(2.0/wildeBL)
-        yd = np.r_[np.ones((winLen))*yd[0],yd,np.ones((winLen))*yd[-1]]
-        ySmooth = np.convolve(w/w.sum(),yd,mode='same')[(winLen):-(winLen)]
-        yv = np.diff(ySmooth)
-        yv = np.r_[np.ones((vwinLen))*yv[0],yv,np.ones((vwinLen))*yv[-1]]
-        yv = np.convolve(w2/w2.sum(),yv,mode='same')[(vwinLen):-(vwinLen-1)]
-        ya = np.diff(yv)
-        ya = np.r_[np.ones((vwinLen))*ya[0],ya,np.ones((vwinLen))*ya[-1]]
-        ya = np.convolve(w2/w2.sum(),ya,mode='same')[(vwinLen):-(vwinLen-1)]
-        #xSmooth = xSmooth[(winLen):-(winLen)]
+
+        xSmooth = sse[:,0]
+        ySmooth = sse[:,1]
+        xv = sse[:,2]/0.1
+        yv = sse[:,3]/0.1
+        xa = sse[:,4]/0.01
+        ya = sse[:,5]/0.01
         headings = np.zeros_like(xSmooth)
         dx = np.zeros_like(xSmooth)
         dy = np.zeros_like(xSmooth)
@@ -70,7 +77,9 @@ for index, row in df.iterrows():
             stop = min(i+5,len(headings))-1
             dx[i] = xSmooth[stop]-xSmooth[start]
             dy[i] = ySmooth[stop]-ySmooth[start]
-        headings = np.arctan2(dy,dx)
+        headings = np.arctan2(yv,xv)
+        
+        
         #headings[-1]=headings[-2] 
 #        plot arrows for error checking
 #        if cnum==100:
