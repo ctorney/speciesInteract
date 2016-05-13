@@ -13,7 +13,6 @@ DD = '/media/ctorney/SAMSUNG/'
 DATADIR = DD + '/data/wildebeest/lacey-field-2015/'
 CLIPDIR = DD + '/data/wildebeest/lacey-field-2015/wildzeb/'
 CLIPLIST = HD + '/workspace/speciesInteract/clipListReduced.csv'
-
 OUTDIR = HD + '/Dropbox/Wildebeest_collaboration/Data/w_z/'
 
 
@@ -39,8 +38,6 @@ kf = KalmanFilter(transition_matrices = transition_matrix, observation_matrices 
 
 df = pd.read_csv(CLIPLIST)
 for index, row in df.iterrows():
-    if index!=4:
-        continue
     inputName = row.clipname
     wildeBL = row.bl_w
     noext, ext = os.path.splitext(inputName)
@@ -55,12 +52,20 @@ for index, row in df.iterrows():
     px_to_m = (2.0/wildeBL) # approximate metres by wildebeest body length of 2 metres
     
     for cnum, cpos in posDF.groupby('id'):
-        obs = np.vstack((cpos['x'].values*px_to_m, cpos['y'].values*px_to_m)).T
+        ft = np.arange(cpos['frame'].values[0],cpos['frame'].values[-1]+1)
         #obs = np.vstack((cpos['x'].values, cpos['y'].values)).T
+        obs = np.zeros((len(ft),2))
+        obs = np.ma.array(obs, mask=np.zeros_like(obs))
+        for f in range(len(ft)):
+            if len(cpos[cpos['frame']==ft[f]].x.values)>0:
+                obs[f][0]=cpos[cpos['frame']==ft[f]].x.values[0]*px_to_m
+                obs[f][1]=cpos[cpos['frame']==ft[f]].y.values[0]*px_to_m
+            else:
+                obs[f]=np.ma.masked
+
         kf.initial_state_mean=[cpos['x'].values[0]*px_to_m,cpos['y'].values[0]*px_to_m,0,0,0,0]
         sse = kf.smooth(obs)[0]
 
-        ft = cpos['frame'].values
         ani = cpos['animal'].values[0]
 
         xSmooth = sse[:,0]
