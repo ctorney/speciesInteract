@@ -22,9 +22,9 @@ interaction_angle = Uniform('interaction_angle', lower=0, upper=pi,value=0.2)
 align_weight = Uniform('align_weight', lower=0.0, upper=2.0,value=0.7)
 rho_s = Uniform('rho_s',lower=0, upper=1,value=0.9524)
 alpha = Uniform('alpha',lower=0, upper=1,value=0.4)
-rho_m = 0.921#Uniform('rho_m',lower=0, upper=1,value=0.9181)
-rho_e = 0.930#Uniform('rho_e',lower=0, upper=1,value=0.9178)
-beta = 0.135#Uniform('beta',lower=0, upper=1,value=0.136)
+rho_m = 0.930
+rho_e = 0.926
+beta = 0.107
 
 neighbours = np.load('../pdata/neighbours.npy')
 mvector = np.load('../pdata/mvector.npy')

@@ -25,42 +25,46 @@ viridis_r = matplotlib.colors.LinearSegmentedColormap( 'viridis_r', matplotlib.c
 plt.register_cmap(name='viridis_r', cmap=viridis_r)
 
 plt.close('all')
-dirs = ['zeb2wild']
+dirs = ['zeb2wild','zeb']
 values = np.zeros((4,3))
 plt.figure()
 for idx,dd in enumerate(dirs): 
-    
+    plt.figure()
     aa = np.load(dd + '/alpha.npy')
     bb = np.load(dd + '/beta.npy')
-    ev=(1-aa)*(1-bb)
-    sv=bb
-    mv=(aa)*(1-bb)
-    values[idx,0]=(np.mean(ev))-0.6
+    mv=(1-bb)*(1-aa)
+    sv=aa
+    ev=(bb)*(1-aa)
+    values[idx,0]=(np.mean(ev))
     values[idx,1]=(np.mean(sv))
     values[idx,2]=(np.mean(mv))
-    #plt.hist(mv,normed=True, label='memory')
-    plt.hist(sv,normed=True, range=[0,0.3], bins=60,label=dd,alpha=0.5)
-    #plt.hist(ev,normed=True, label='environment')
-plt.title('strength of social interaction force')
-plt.legend(loc='upper right')
-plt.xlim(0,0.4)
-plt.show()
-plt.savefig('socialinteractions.png')
+    plt.hist(mv,normed=True, label='memory')
+    plt.hist(sv,normed=True, label=dd,alpha=0.5)
+    plt.hist(ev,normed=True, label='environment')
+    plt.title('strength of social interaction force')
+    plt.legend(loc='upper right')
+    plt.xlim(0,0.4)
+    plt.show()
+    plt.savefig(dd+'socialinteractions.png')
 
 
-plt.figure()
-for idx,dd in enumerate(dirs): 
+    plt.figure()
+
     
-    aa = np.load(dd + '/rho.npy')
-    
-    plt.hist(aa,normed=True,label=dd)#, range=[0.7,1], bins=1000,alpha=0.5)
+    ss = np.load(dd + '/rho_s.npy')
+    ee = np.load(dd + '/rho_e.npy')
+    mm = np.load(dd + '/rho_m.npy')
+    plt.hist(ss,normed=True, label='s')
+    plt.hist(mm,normed=True, label='m')
+    plt.hist(ee,normed=True, label='environment')
+    #plt.hist(aa,normed=True,label=dd)#, range=[0.7,1], bins=1000,alpha=0.5)
         
     
-plt.title('strength of bias')
-plt.legend(loc='upper left')
+    plt.title('strength of bias')
+    plt.legend(loc='upper left')
 #plt.xlim(0.8,1)
-plt.show()
-plt.savefig('bias.png')
+    plt.show()
+    plt.savefig(dd+'bias.png')
 
 #### Scatter Plot
 #scale = 0.3
@@ -96,18 +100,21 @@ maxr=sr+(dr*binn2)
 
 for idx,dd in enumerate(dirs): 
     
-    aa = np.load(dd + '/ignore_length.npy')
+    aa = np.load(dd + '/decay_exponent.npy')
     bb = np.load(dd + '/interaction_length.npy')
     cc = np.load(dd + '/interaction_angle.npy')
     ig=np.mean(aa)
     ir=np.mean(bb)
     vis_angle = np.mean(cc)
+    
+    #areas = np.exp(-r2/ir)*np.tanh(r2/ig)
+    areas = (np.exp((1.0/ig)*(1-(r2/ir)**ig))*(r2/ir))#**ig
     theta2 = np.linspace(0,2.0 * np.pi, binn1+1)
-##theta2 = np.linspace(-vis_angle,vis_angle, binn1+1)
+    ##theta2 = np.linspace(-vis_angle,vis_angle, binn1+1)
     r2 = np.linspace(sr, maxr, binn2+1)
     areas = pi*((r2+dr)**2-r2**2)
-
-    areas = (np.exp((1.0/ig)*(1-(r2/ir)**ig))*(r2/ir))#**ig
+    
+    #    areas = (np.exp((1.0/ig)*(1-(r2/ir)**ig))*(r2/ir))#**ig
     areas=np.tile(areas,(binn1,1)).T
     
     for i in range(binn1):

@@ -52,6 +52,8 @@ for index, row in df.iterrows():
     px_to_m = (2.0/wildeBL) # approximate metres by wildebeest body length of 2 metres
     
     for cnum, cpos in posDF.groupby('id'):
+        if len(cpos)==1:
+            continue
         ft = np.arange(cpos['frame'].values[0],cpos['frame'].values[-1]+1)
         #obs = np.vstack((cpos['x'].values, cpos['y'].values)).T
         obs = np.zeros((len(ft),2))

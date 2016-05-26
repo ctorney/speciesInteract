@@ -23,13 +23,16 @@ interaction_angle = Uniform('interaction_angle', lower=0, upper=pi,value=0.1946)
 rho_s = Uniform('rho_s',lower=0, upper=1,value=0.9675)
 alpha = Uniform('alpha',lower=0, upper=1,value=0.455)
 rho_m = 0.930
-rho_e = 0.926
-beta = 0.107
+rho_e = 0.947
+beta = 0.101
 
 neighbours = np.load('../pdata/neighbours.npy')
 mvector = np.load('../pdata/mvector.npy')
 evector = np.load('../pdata/evector.npy')
 
+neighbours = neighbours[0::10,:,:]
+mvector = mvector[0::10]
+evector = evector[0::10]
 @deterministic(plot=False)
 def social_vector(il=interaction_length, ia=interaction_angle, ig=ignore_length):
         

@@ -39,9 +39,9 @@ attract_angle = Uniform('attract_angle', lower=0, upper=pi,value=0.187738555)
 rho_s = Uniform('rho_s',lower=0, upper=1,value=0.9681)
 alpha = Uniform('alpha',lower=0, upper=1,value=0.2933)
 
-rho_m = 0.921#Uniform('rho_m',lower=0, upper=1,value=0.9181)
-rho_e = 0.930#Uniform('rho_e',lower=0, upper=1,value=0.9178)
-beta = 0.135#Uniform('beta',lower=0, upper=1,value=0.136)
+rho_m = 0.930
+rho_e = 0.926
+beta = 0.107
 
 neighbours = np.load('../pdata/neighbours.npy')
 mvector = np.load('../pdata/mvector.npy')

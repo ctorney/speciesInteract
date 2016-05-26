@@ -14,10 +14,11 @@ import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
 
-__all__ = ['decay_exponent','interaction_length','interaction_angle','rho_s','rho_m','rho_e','alpha','beta','mvector','social_vector','desired_vector']
+__all__ = ['decay_exponent','interaction_length','ignore_length','interaction_angle','rho_s','rho_m','rho_e','alpha','beta','mvector','social_vector','desired_vector']
 
 
 interaction_length = Uniform('interaction_length', lower=0.5, upper=20.0)
+ignore_length = Uniform('ignore_length', lower=0.5, upper=20.0)
 #ignore_length = DiscreteUniform('ignore_length', lower=1, upper=3)#,value=1.0)
 decay_exponent = Uniform('decay_exponent', lower=0.5, upper=10.0)#,value=1.0)
 interaction_angle = Uniform('interaction_angle', lower=0, upper=pi)
@@ -46,9 +47,10 @@ cos_ev = np.cos(evector)
 neighbours = neighbours[animals==ANIMAL]
 
 @deterministic(plot=False)
-def social_vector(il=interaction_length, de=decay_exponent, ia=interaction_angle):
+def social_vector(il=interaction_length, ig=ignore_length, de=decay_exponent, ia=interaction_angle):
         
-    n_weights = ((neighbours[:,:,0]/il)*np.exp((1.0/de)*(1.0-(neighbours[:,:,0]/il)**de)))
+    #n_weights = ((neighbours[:,:,0]/il)*np.exp((1.0/de)*(1.0-(neighbours[:,:,0]/il)**de)))
+    n_weights = np.tanh(neighbours[:,:,0]*ig)*(0.5+0.5*np.tanh(de*(il-neighbours[:,:,0])))
     
 
     n_weights[(neighbours[:,:,1]<-ia)|(neighbours[:,:,1]>ia)]=0.0
