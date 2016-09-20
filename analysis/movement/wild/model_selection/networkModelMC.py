@@ -32,6 +32,10 @@ neighbours = np.load('../pdata/neighbours.npy')
 mvector = np.load('../pdata/mvector.npy')
 evector = np.load('../pdata/evector.npy')
 
+skip=10
+neighbours = neighbours[0::skip,:,:]
+mvector = mvector[0::skip]
+evector = evector[0::skip]
 
 netcount=0
     

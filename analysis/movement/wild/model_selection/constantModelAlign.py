@@ -31,9 +31,10 @@ neighbours = np.load('../pdata/neighbours.npy')
 mvector = np.load('../pdata/mvector.npy')
 evector = np.load('../pdata/evector.npy')
 
-neighbours = neighbours[0::10,:,:]
-mvector = mvector[0::10]
-evector = evector[0::10]
+skip=50
+neighbours = neighbours[0::skip,:,:]
+mvector = mvector[0::skip]
+evector = evector[0::skip]
     
 # variable to normalize the move step lengths for the alignment rule
 dists = neighbours[:,:,4]

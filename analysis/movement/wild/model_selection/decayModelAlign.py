@@ -46,6 +46,10 @@ beta = 0.135#Uniform('beta',lower=0, upper=1,value=0.136)
 neighbours = np.load('../pdata/neighbours.npy')
 mvector = np.load('../pdata/mvector.npy')
 evector = np.load('../pdata/evector.npy')
+skip=10
+neighbours = neighbours[0::skip,:,:]
+mvector = mvector[0::skip]
+evector = evector[0::skip]
 
 # variable to normalize the move step lengths for the alignment rule
 dists = neighbours[:,:,4]

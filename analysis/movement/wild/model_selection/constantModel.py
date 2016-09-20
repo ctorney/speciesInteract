@@ -30,9 +30,10 @@ neighbours = np.load('../pdata/neighbours.npy')
 mvector = np.load('../pdata/mvector.npy')
 evector = np.load('../pdata/evector.npy')
 
-neighbours = neighbours[0::10,:,:]
-mvector = mvector[0::10]
-evector = evector[0::10]
+skip=10
+neighbours = neighbours[0::skip,:,:]
+mvector = mvector[0::skip]
+evector = evector[0::skip]
 @deterministic(plot=False)
 def social_vector(il=interaction_length, ia=interaction_angle, ig=ignore_length):
         
