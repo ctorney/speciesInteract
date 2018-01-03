@@ -245,7 +245,7 @@ ax1.set_thetagrids(angles=np.arange(0,360,45),labels=['front', '', '',  '', 'bac
 #colourbar
 position=fig1.add_axes([1.1,0.12,0.04,0.8])
 cbar=plt.colorbar(im,cax=position) 
-cbar.set_label('Attraction', rotation=90,fontsize='xx-large',labelpad=15)      
+cbar.set_label('Relative direction', rotation=90,fontsize='xx-large',labelpad=15)      
 
 #body length legend - draws the ticks and 
 axes=ax2            
